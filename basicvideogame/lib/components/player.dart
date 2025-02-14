@@ -3,11 +3,13 @@
 import 'package:basicvideogame/components/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
+import 'package:flame/collisions.dart';
 import 'dart:math' as math;
 import 'package:flutter/services.dart';
+import 'enemy.dart';
 
 class Player extends SpriteComponent 
-    with KeyboardHandler, DragCallbacks, HasGameRef<MyGame> {
+    with KeyboardHandler, DragCallbacks, HasGameRef<MyGame>, CollisionCallbacks {
   Vector2 velocity = Vector2.zero();
   final double speed = 200.0;
 
@@ -15,6 +17,7 @@ class Player extends SpriteComponent
 
   @override
   Future<void> onLoad() async {
+    super.onLoad();
     sprite = await Sprite.load('player.png');
     size = Vector2(50, 50);
     angle = -3.14159 / 2;
@@ -22,10 +25,21 @@ class Player extends SpriteComponent
       gameRef.size.x - size.x - 10, 
       gameRef.size.y / 2 - size.y / 2 
     );
+
+    final hitbox = PolygonHitbox([
+      Vector2(25, 0),
+      Vector2(50, 35),
+      Vector2(0, 35),
+    ]);
+
+    hitbox.debugMode = true;
+
+    add(hitbox);
   }
 
   @override
   void update(double dt) {
+    super.update(dt);
     position += velocity * dt;
     position.y = position.y.clamp(size.y / 2, gameRef.size.y - size.y / 2);
   }
@@ -47,5 +61,14 @@ class Player extends SpriteComponent
     super.onDragUpdate(event);
     position.y += event.localDelta.y;
     position.y = position.y.clamp(size.y / 2, gameRef.size.y - size.y / 2);
+  }
+
+  @override
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is Enemy) {
+      // Handle collision with enemy
+      (gameRef).showGameOverScreen();
+    }
   }
 }

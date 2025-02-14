@@ -4,10 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:flame/game.dart';
 import 'components/game.dart';
 import 'components/main_menu.dart';
+import 'components/game_over.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(GameWidget(
+    game: MyGame(),
+    overlayBuilderMap: {
+      'gameOver': (context, game) => GameOverScreen(game: game as MyGame),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
