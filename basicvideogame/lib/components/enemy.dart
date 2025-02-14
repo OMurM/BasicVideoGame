@@ -31,7 +31,7 @@ class Enemy extends SpriteComponent with HasGameRef, CollisionCallbacks {
       Vector2(0, 50),
     ]);
 
-    hitbox.debugMode = true; // remove this at the end
+    hitbox.debugMode = true; //
 
     add(hitbox);
   }
