@@ -1,5 +1,6 @@
 // ignore_for_file: unused_import
 
+import 'package:basicvideogame/components/bullet.dart';
 import 'package:basicvideogame/components/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
@@ -44,6 +45,11 @@ class Player extends SpriteComponent
     position.y = position.y.clamp(size.y / 2, gameRef.size.y - size.y / 2);
   }
 
+  void shoot() {
+    final bullet = Bullet(position.clone());
+    gameRef.add(bullet);
+  }
+
   @override
   bool onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
     if (keysPressed.contains(LogicalKeyboardKey.arrowUp)) {
@@ -52,6 +58,10 @@ class Player extends SpriteComponent
       velocity.y = speed;
     } else {
       velocity.y = 0;
+    }
+
+    if (event is KeyDownEvent && event.logicalKey == LogicalKeyboardKey.space) {
+      shoot();
     }
     return true;
   }
@@ -67,8 +77,7 @@ class Player extends SpriteComponent
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
     super.onCollision(intersectionPoints, other);
     if (other is Enemy) {
-      // Handle collision with enemy
-      (gameRef).showGameOverScreen();
+      gameRef.showGameOverScreen();
     }
   }
 }

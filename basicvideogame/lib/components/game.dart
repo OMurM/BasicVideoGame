@@ -5,21 +5,30 @@ import 'enemy.dart';
 import 'package:flame/input.dart';
 import 'dart:math';
 import 'dart:ui';
+import 'hud.dart';
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
-  double enemySpawnTimer = 0.0;
+double enemySpawnTimer = 0.0;
   double individualEnemySpawnTimer = 0.0;
   final double enemySpawnInterval = 5.0;
   final double individualEnemySpawnInterval = 0.2;
   int enemyCount = 1;
   int enemiesToSpawn = 0;
   final Random random = Random();
+  int score = 0;
+  late Hud hud;
+  String playerName;
+  String difficultyLevel;
+
+  MyGame(this.playerName, this.difficultyLevel);
 
   @override
   Future<void> onLoad() async {
     super.onLoad();
     add(Background());
     add(Player());
+    hud = Hud(playerName, difficultyLevel);
+    add(hud);
   }
 
   @override
@@ -27,6 +36,8 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     super.update(dt);
     enemySpawnTimer += dt;
     individualEnemySpawnTimer += dt;
+    score += (dt * 100).toInt();
+    hud.updateScore(score);
 
     if (enemySpawnTimer >= enemySpawnInterval) {
       enemySpawnTimer = 0.0;
@@ -50,7 +61,6 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
         add(Enemy()..position = spawnPosition);
         enemiesToSpawn--;
       } else {
-        print('Failed to find non-overlapping position after $attempts attempts');
       }
     }
   }
@@ -66,6 +76,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     individualEnemySpawnTimer = 0.0;
     enemyCount = 1;
     enemiesToSpawn = 0;
+    score = 0;
     add(Player());
     resumeEngine();
   }

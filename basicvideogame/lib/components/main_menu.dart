@@ -1,5 +1,3 @@
-// ignore_for_file: avoid_print
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'game_screen.dart';
@@ -16,17 +14,19 @@ class MainMenuState extends State<MainMenu> {
   String _selectedDifficulty = 'Easy';
 
   void _startGame() {
-    print('Starting the game with name: ${_nameController.text} and difficulty: $_selectedDifficulty'); // Add semicolon here
-
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const GameScreen()),
+      MaterialPageRoute(
+        builder: (context) => GameScreen(
+          playerName: _nameController.text,
+          difficultyLevel: _selectedDifficulty,
+        ),
+      ),
     );
- }
+  }
 
   void _exitGame() {
-    print('Exiting game');
-    SystemNavigator.pop();
+    SystemNavigator.pop(animated: true);
   }
 
   @override
@@ -35,7 +35,7 @@ class MainMenuState extends State<MainMenu> {
       appBar: AppBar(
         title: const Text('Main Menu'),
         centerTitle: true,
-        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -49,7 +49,6 @@ class MainMenuState extends State<MainMenu> {
               ),
             ),
             const SizedBox(height: 20),
-            
             const Text('Select Difficulty'),
             DropdownButton<String>(
               value: _selectedDifficulty,
@@ -58,7 +57,7 @@ class MainMenuState extends State<MainMenu> {
                   _selectedDifficulty = newValue!;
                 });
               },
-              items: <String>['Easy', 'Medium', 'Hard']
+              items: <String>['Easy', 'Hard']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -67,13 +66,11 @@ class MainMenuState extends State<MainMenu> {
               }).toList(),
             ),
             const SizedBox(height: 20),
-            
             ElevatedButton(
               onPressed: _startGame,
               child: const Text('Start Game'),
             ),
             const SizedBox(height: 10),
-            
             ElevatedButton(
               onPressed: _exitGame,
               child: const Text('Exit Game'),

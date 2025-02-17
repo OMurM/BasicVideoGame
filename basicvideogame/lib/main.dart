@@ -7,12 +7,7 @@ import 'components/main_menu.dart';
 import 'components/game_over.dart';
 
 void main() {
-  runApp(GameWidget(
-    game: MyGame(),
-    overlayBuilderMap: {
-      'gameOver': (context, game) => GameOverScreen(game: game as MyGame),
-    },
-  ));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -7,7 +7,6 @@ import 'package:flame/components.dart';
 import 'player.dart';
 
 class Enemy extends SpriteComponent with HasGameRef, CollisionCallbacks {
-  // Base speed we will increase it later
   double speed = 100;
   final Random random = Random();
 
@@ -24,7 +23,6 @@ class Enemy extends SpriteComponent with HasGameRef, CollisionCallbacks {
       random.nextDouble() * (gameRef.size.y - size.y) + size.y / 2
       );
 
-      // Triangle hitbox simple
       final hitbox = PolygonHitbox([
       Vector2(25, 0),
       Vector2(50, 50),
