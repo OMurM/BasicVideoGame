@@ -1,4 +1,5 @@
 import 'package:basicvideogame/components/enemy.dart';
+import 'package:basicvideogame/components/enemy_bullet.dart';
 import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 
@@ -17,7 +18,7 @@ class Bullet extends SpriteComponent with HasGameRef, CollisionCallbacks {
     final hitbox = CircleHitbox();
 
     hitbox.debugMode = true;
-    add(hitbox);2
+    add(hitbox);
   }
 
   @override
@@ -35,6 +36,9 @@ class Bullet extends SpriteComponent with HasGameRef, CollisionCallbacks {
     if (other is Enemy) {
       other.removeFromParent();
       removeFromParent();
+    }
+    if (other is EnemyBullet) {
+      other.removeFromParent();
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flame/game.dart';
+import 'package:flame_audio/flame_audio.dart';
 import 'background.dart';
 import 'player.dart';
 import 'enemy.dart';
@@ -8,7 +9,7 @@ import 'dart:ui';
 import 'hud.dart';
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
-double enemySpawnTimer = 0.0;
+  double enemySpawnTimer = 0.0;
   double individualEnemySpawnTimer = 0.0;
   final double enemySpawnInterval = 5.0;
   final double individualEnemySpawnInterval = 0.2;
@@ -16,6 +17,7 @@ double enemySpawnTimer = 0.0;
   int enemiesToSpawn = 0;
   final Random random = Random();
   int score = 0;
+  double scoreAccumulator = 0.0; // Accumulate score increment
   late Hud hud;
   String playerName;
   String difficultyLevel;
@@ -29,6 +31,11 @@ double enemySpawnTimer = 0.0;
     add(Player());
     hud = Hud(playerName, difficultyLevel);
     add(hud);
+
+    FlameAudio.bgm.initialize();
+    FlameAudio.bgm.play('retro-game-arcade.mp3', volume: 0.25);
+
+    resumeEngine();
   }
 
   @override
@@ -36,8 +43,13 @@ double enemySpawnTimer = 0.0;
     super.update(dt);
     enemySpawnTimer += dt;
     individualEnemySpawnTimer += dt;
-    score += (dt * 100).toInt();
-    hud.updateScore(score);
+    scoreAccumulator += dt * 10; // Adjusted score increment rate
+
+    if (scoreAccumulator >= 1.0) {
+      score += scoreAccumulator.toInt();
+      scoreAccumulator -= scoreAccumulator.toInt();
+      hud.updateScore(score);
+    }
 
     if (enemySpawnTimer >= enemySpawnInterval) {
       enemySpawnTimer = 0.0;
@@ -66,6 +78,8 @@ double enemySpawnTimer = 0.0;
   }
 
   void showGameOverScreen() {
+    FlameAudio.bgm.stop();
+    FlameAudio.play('game-over-arcade.mp3'); // Play game over audio
     overlays.add('gameOver');
     pauseEngine();
   }
@@ -77,7 +91,11 @@ double enemySpawnTimer = 0.0;
     enemyCount = 1;
     enemiesToSpawn = 0;
     score = 0;
+    scoreAccumulator = 0.0; // Reset score accumulator
     add(Player());
+    hud = Hud(playerName, difficultyLevel); 
+    add(hud);
+    FlameAudio.bgm.play('retro-game-arcade.mp3', volume: 0.25);
     resumeEngine();
   }
 }

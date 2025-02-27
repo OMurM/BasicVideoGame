@@ -32,6 +32,8 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.8
   flame: ^1.24.0
+  flame_audio: ^2.11.0
+  pixel_perfect: ^1.1.3
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +56,10 @@ flutter:
     - assets/images/player.png
     - assets/images/enemy.png
     - assets/images/bullet.png
+    - assets/audio/retro-game-arcade.mp3
+    - assets/audio/game-bonus.mp3
+    - assets/audio/game-over-arcade.mp3
+    - assets/audio/game-start.mp3
     
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
