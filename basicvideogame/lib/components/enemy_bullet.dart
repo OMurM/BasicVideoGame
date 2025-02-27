@@ -19,7 +19,7 @@ class EnemyBullet extends SpriteComponent with HasGameRef<MyGame>, CollisionCall
 
     final hitbox = CircleHitbox();
 
-    hitbox.debugMode = true;
+    hitbox.debugMode = false;
     add(hitbox);
   }
 

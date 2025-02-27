@@ -33,7 +33,7 @@ class Enemy extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks 
       Vector2(0, 50),
     ]);
 
-    hitbox.debugMode = true; // false later when showing
+    hitbox.debugMode = false; // false later when showing
     add(hitbox);
 
     if (gameRef.difficultyLevel == "Hard") {

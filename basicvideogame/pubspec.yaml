@@ -60,6 +60,7 @@ flutter:
     - assets/audio/game-bonus.mp3
     - assets/audio/game-over-arcade.mp3
     - assets/audio/game-start.mp3
+    - assets/audio/shooting-sound.mp3
     
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

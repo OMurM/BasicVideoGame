@@ -33,7 +33,7 @@ class Player extends SpriteComponent
       Vector2(0, 35),
     ]);
 
-    hitbox.debugMode = true;
+    hitbox.debugMode = false;
 
     add(hitbox);
   }
