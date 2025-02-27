@@ -1,3 +1,6 @@
+// ignore_for_file: unused_import
+
+import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'background.dart';
@@ -17,7 +20,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
   int enemiesToSpawn = 0;
   final Random random = Random();
   int score = 0;
-  double scoreAccumulator = 0.0; // Accumulate score increment
+  double scoreAccumulator = 0.0;
   late Hud hud;
   String playerName;
   String difficultyLevel;
@@ -43,7 +46,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     super.update(dt);
     enemySpawnTimer += dt;
     individualEnemySpawnTimer += dt;
-    scoreAccumulator += dt * 10; // Adjusted score increment rate
+    scoreAccumulator += dt * 10;
 
     if (scoreAccumulator >= 1.0) {
       score += scoreAccumulator.toInt();
@@ -65,7 +68,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
       do {
         spawnPosition = Vector2(0, random.nextDouble() * (size.y - 50));
         hasOverlap = children.whereType<Enemy>().any(
-          (enemy) => enemy.toRect().overlaps(Rect.fromLTWH(spawnPosition.x, spawnPosition.y, 50, 50)) // Adjusted to match enemy size
+          (enemy) => enemy.toRect().overlaps(Rect.fromLTWH(spawnPosition.x, spawnPosition.y, 50, 50)) 
         );
         attempts++;
       } while (hasOverlap && attempts < 10);
@@ -79,7 +82,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
 
   void showGameOverScreen() {
     FlameAudio.bgm.stop();
-    FlameAudio.play('game-over-arcade.mp3'); // Play game over audio
+    FlameAudio.play('game-over-arcade.mp3');
     overlays.add('gameOver');
     pauseEngine();
   }
@@ -91,11 +94,23 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     enemyCount = 1;
     enemiesToSpawn = 0;
     score = 0;
-    scoreAccumulator = 0.0; // Reset score accumulator
+    scoreAccumulator = 0.0;
     add(Player());
     hud = Hud(playerName, difficultyLevel); 
     add(hud);
     FlameAudio.bgm.play('retro-game-arcade.mp3', volume: 0.25);
+    resumeEngine();
+  }
+
+  void pauseGame() {
+    overlays.add('pauseMenu');
+    FlameAudio.bgm.stop();
+    pauseEngine();
+  }
+
+  void resumeGame() {
+    overlays.remove('pauseMenu');
+    FlameAudio.bgm.resume();
     resumeEngine();
   }
 }
