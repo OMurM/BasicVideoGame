@@ -1,6 +1,5 @@
 // ignore_for_file: unused_import
 
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flame_audio/flame_audio.dart';
 import 'background.dart';
@@ -10,6 +9,7 @@ import 'package:flame/input.dart';
 import 'dart:math';
 import 'dart:ui';
 import 'hud.dart';
+import 'game_over.dart';
 
 class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDetection {
   double enemySpawnTimer = 0.0;
@@ -35,9 +35,11 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     hud = Hud(playerName, difficultyLevel);
     add(hud);
 
+    // Background music initialize
     FlameAudio.bgm.initialize();
     FlameAudio.bgm.play('retro-game-arcade.mp3', volume: 0.25);
 
+    // Ensure the game is not paused
     resumeEngine();
   }
 
@@ -68,7 +70,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
       do {
         spawnPosition = Vector2(0, random.nextDouble() * (size.y - 50));
         hasOverlap = children.whereType<Enemy>().any(
-          (enemy) => enemy.toRect().overlaps(Rect.fromLTWH(spawnPosition.x, spawnPosition.y, 50, 50)) 
+          (enemy) => enemy.toRect().overlaps(Rect.fromLTWH(spawnPosition.x, spawnPosition.y, 50, 50))
         );
         attempts++;
       } while (hasOverlap && attempts < 10);
@@ -78,6 +80,11 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
       } else {
       }
     }
+  }
+
+  void incrementScore(int points) {
+    score += points;
+    hud.updateScore(score);
   }
 
   void showGameOverScreen() {
@@ -96,7 +103,7 @@ class MyGame extends FlameGame with HasKeyboardHandlerComponents, HasCollisionDe
     score = 0;
     scoreAccumulator = 0.0;
     add(Player());
-    hud = Hud(playerName, difficultyLevel); 
+    hud = Hud(playerName, difficultyLevel);
     add(hud);
     FlameAudio.bgm.play('retro-game-arcade.mp3', volume: 0.25);
     resumeEngine();

@@ -3,8 +3,9 @@ import 'game.dart';
 
 class GameOverScreen extends StatelessWidget {
   final MyGame game;
+  final int score;
 
-  const GameOverScreen({super.key, required this.game});
+  const GameOverScreen({super.key, required this.game, required this.score});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,9 @@ class GameOverScreen extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Text('Game Over', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+          const Text('Game Over', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
+          const SizedBox(height: 20),
+          Text('Score: $score', style: const TextStyle(fontSize: 40, fontWeight: FontWeight.bold, color: Colors.white)),
           const SizedBox(height: 20),
           ElevatedButton(
             onPressed: () {

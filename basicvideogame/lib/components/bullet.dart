@@ -2,11 +2,12 @@ import 'package:basicvideogame/components/enemy.dart';
 import 'package:basicvideogame/components/enemy_bullet.dart';
 import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
+import 'game.dart';
 
-class Bullet extends SpriteComponent with HasGameRef, CollisionCallbacks {
+class Bullet extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks {
   final double speed = 200.0;
 
-  Bullet(Vector2 position) : super(position: position, size: Vector2(50,50), anchor: Anchor.center);
+  Bullet(Vector2 position) : super(position: position, size: Vector2(50, 50), anchor: Anchor.center);
 
   @override
   Future<void> onLoad() async {
@@ -35,6 +36,7 @@ class Bullet extends SpriteComponent with HasGameRef, CollisionCallbacks {
     super.onCollision(intersectionPoints, other);
     if (other is Enemy) {
       other.removeFromParent();
+      gameRef.incrementScore(100);
       removeFromParent();
     }
     if (other is EnemyBullet) {

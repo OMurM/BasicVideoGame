@@ -18,7 +18,7 @@ class GameScreen extends StatelessWidget {
       body: GameWidget(
         game: game,
         overlayBuilderMap: {
-          'gameOver': (context, game) => GameOverScreen(game: game as MyGame),
+          'gameOver': (context, game) => GameOverScreen(game: game as MyGame, score: (game).score),
           'pauseMenu': (context, game) => PauseMenu(game: game as MyGame),
         },
       ),

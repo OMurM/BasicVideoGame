@@ -2,8 +2,10 @@ import 'package:flame/components.dart';
 import 'package:flame/collisions.dart';
 import 'enemy.dart';
 import 'bullet.dart';
+import 'player.dart';
+import 'game.dart';
 
-class EnemyBullet extends SpriteComponent with HasGameRef, CollisionCallbacks { 
+class EnemyBullet extends SpriteComponent with HasGameRef<MyGame>, CollisionCallbacks { 
   final double speed = 200.0;
 
   EnemyBullet(Vector2 position) : super(position: position, size: Vector2(50, 50), anchor: Anchor.center);
@@ -29,15 +31,19 @@ class EnemyBullet extends SpriteComponent with HasGameRef, CollisionCallbacks {
       removeFromParent();
     }
   }
+
   @override
-    void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
-      super.onCollision(intersectionPoints, other);
-      if (other is Enemy) {
-        return;
-      }
-      if (other is Bullet) {
-        other.removeFromParent();
-      }
-      removeFromParent();
+  void onCollision(Set<Vector2> intersectionPoints, PositionComponent other) {
+    super.onCollision(intersectionPoints, other);
+    if (other is Enemy) {
+      return;
     }
+    if (other is Bullet) {
+      other.removeFromParent();
+    }
+    if (other is Player) {
+      gameRef.showGameOverScreen();
+    }
+    removeFromParent();
   }
+}
